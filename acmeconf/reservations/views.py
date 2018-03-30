@@ -1,5 +1,15 @@
 from django.shortcuts import render
 
+from django.shortcuts import redirect
+
+from django.contrib.auth import authenticate, login
+
+from django.views import generic
+
+from django.views.generic import View
+
+from .forms import UserForm
+
 from django.http import HttpResponse
 
 from django.template import loader
@@ -16,3 +26,39 @@ def index(request):
 
 def detail(request, event_id):
     return HttpResponse("You're looking at event %s." % event_id)
+
+class UserFormView(View):
+    form_class = UserForm
+    template_name = 'reservations/registration_form.html'
+
+    # display blank form
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    # process form data
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            #istantiates a user from the form, that is added to the user that we will see in the admin panel
+            user = form.save(commit=False)
+
+            #cleaned (normalized) databases
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            #save the user in the database
+            user.save()
+
+            #returns User object if credentials are correct
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+
+                if user.is_active:
+                    login(request, user)
+                    #return redirect('reservation:index')
+
+        return render(request, self.template_name, {'form': form})
