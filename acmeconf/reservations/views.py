@@ -1,19 +1,11 @@
 from django.shortcuts import render
-
 from django.shortcuts import redirect
-
 from django.contrib.auth import authenticate, login
-
 from django.views import generic
-
 from django.views.generic import View
-
 from .forms import UserForm
-
 from django.http import HttpResponse
-
 from django.template import loader
-
 from .models import Event
 
 def index(request):
@@ -59,6 +51,25 @@ class UserFormView(View):
 
                 if user.is_active:
                     login(request, user)
-                    #return redirect('reservation:index')
+                    return redirect('reservation:index')
 
         return render(request, self.template_name, {'form': form})
+
+def register(request):
+    form = UserForm(request.POST or None)
+    if form.is_valid():
+        user = form.save(commit=False)
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user.set_password(password)
+        user.save()
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                albums = Event.objects.filter(user=request.user)
+                return render(request, 'reservations/index.html', {'albums': albums})
+    context = {
+        "form": form,
+    }
+    return render(request, 'reservations/register.html', context)
