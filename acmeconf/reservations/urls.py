@@ -5,6 +5,7 @@ from django.conf.urls import url
 app_name = 'reservations'
 
 urlpatterns = [
+    url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^register/$', views.register, name='register'),
     url(r'^$', views.index, name='index'),
     path('<int:event_id>/', views.detail, name='detail'),
