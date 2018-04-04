@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.views.generic import View
 from .forms import UserForm
@@ -81,8 +82,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                events = Event.objects.filter(user=request.user)
-                return render(request, 'reservations/index.html', {'events': events})
+                return redirect('reservations:index')
             else:
                 return render(request, 'reservations/login.html', {'error_message': 'Your account has been disabled'})
         else:
