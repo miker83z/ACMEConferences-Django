@@ -8,6 +8,7 @@ from .forms import UserForm
 from django.http import HttpResponse
 from django.template import loader
 from .models import Event
+from django.views.generic import DetailView
 
 def index(request):
     latest_event_list = Event.objects.order_by('-date')[:5]
@@ -88,3 +89,6 @@ def login_user(request):
         else:
             return render(request, 'reservations/login.html', {'error_message': 'Invalid login'})
     return render(request, 'reservations/login.html')
+
+class EventDetailView(generic.DetailView):
+    model = Event

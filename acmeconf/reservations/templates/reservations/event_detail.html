@@ -1,0 +1,11 @@
+{% extends 'reservations/base_visitor.html' %}
+
+{% block body %}
+  <h1>Event: {{ event.name }}</h1>
+
+  <p><strong>Name:</strong> <a href="">{{ event.name }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Location:</strong> {{ event.location }}</p>
+  <p><strong>Seats:</strong> {{ event.seats }}</p>
+  <p><strong>Date:</strong> {{ event.date }}</p>
+  
+{% endblock %}
