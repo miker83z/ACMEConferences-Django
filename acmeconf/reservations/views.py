@@ -67,8 +67,7 @@ def register(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                albums = Event.objects.filter(user=request.user)
-                return render(request, 'reservations/index.html', {'albums': albums})
+                return redirect('reservations:index')
     context = {
         "form": form,
     }
@@ -82,7 +81,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                albums = Album.objects.filter(user=request.user)
+                events = Event.objects.filter(user=request.user)
                 return render(request, 'reservations/index.html', {'events': events})
             else:
                 return render(request, 'reservations/login.html', {'error_message': 'Your account has been disabled'})
