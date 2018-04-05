@@ -97,13 +97,16 @@ class EventDetailView(generic.DetailView):
 
 
 def reservation(request, event_id):
-    form = EventReservationForm(request.POST or None)
-    if form.is_valid():
-        event = event_id
-        reservation = request.user.id
-        event = form.save(commit=False)
-        event.save()
-    context = {
-        'form': form,
-    }
-    return render(request, 'reservations/reservation.html', context)
+    if request.method == 'POST':
+        form = EventReservationForm(request.POST)
+        if form.is_valid():
+            event = event_id
+            event = form.save(commit=False)
+            event.reservation = request.user
+            event.save()
+            return HttpResponse('Evento prenotato correttamente!')
+    else:
+        form = EventReservationForm()
+    return render(request, 'reservations/reservation.html', {
+        'form': form
+    })

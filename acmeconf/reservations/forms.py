@@ -15,5 +15,5 @@ class EventReservationForm(forms.ModelForm):
 
     class Meta:
         model = EventReservation
-        fields = ['event' , 'reservation']
+        fields = ['event']
         exclude = ()
