@@ -1,4 +1,7 @@
 from django.db import models
+import uuid #creates unique istance for the event prenotation
+from django.contrib.auth.models import User
+from datetime import date
 
 
 class Event(models.Model):
@@ -7,17 +10,7 @@ class Event(models.Model):
     seats = models.IntegerField(default=0)
     date = models.DateTimeField('date published')
 
-class EventFee(models.Model):
-    event = models.ForeignKey(Event, related_name='fee_options', on_delete=models.DO_NOTHING)
-    available = models.BooleanField(default=True)
-    name = models.CharField(max_length=255)
-    amount = models.DecimalField(max_digits=255,decimal_places=2)
-
-class EventChoice(models.Model):
-    event = models.ForeignKey(Event, related_name='choices', on_delete=models.DO_NOTHING)
-    order = models.PositiveIntegerField(default=0)
-    name = models.CharField(max_length=32)
-    label = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
-    required = models.BooleanField(default=False)
-    allow_multiple = models.BooleanField(default=False)
+class EventReservation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for the reservation")
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
+    reservation = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)

@@ -9,6 +9,8 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Event
 from django.views.generic import DetailView
+from .forms import EventReservationForm
+from django.contrib.auth.models import User
 
 def index(request):
     latest_event_list = Event.objects.order_by('-date')[:5]
@@ -92,3 +94,16 @@ def login_user(request):
 
 class EventDetailView(generic.DetailView):
     model = Event
+
+
+def reservation(request, event_id):
+    form = EventReservationForm(request.POST or None)
+    if form.is_valid():
+        event = event_id
+        reservation = request.user.id
+        event = form.save(commit=False)
+        event.save()
+    context = {
+        'form': form,
+    }
+    return render(request, 'reservations/reservation.html', context)
