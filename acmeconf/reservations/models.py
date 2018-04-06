@@ -9,9 +9,11 @@ class Event(models.Model):
     location = models.CharField(max_length=200)
     seats = models.IntegerField(default=0)
     date = models.DateTimeField('date published')
+    ticket_price = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
+
 
 class EventReservation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for the reservation")

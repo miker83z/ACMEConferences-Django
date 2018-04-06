@@ -103,6 +103,11 @@ def reservation(request, event_id):
             event = event_id
             event = form.save(commit=False)
             event.reservation = request.user
+
+            #retrieve an event object by id
+            q1 = Event.objects.get(id=event_id)
+            q1.seats = q1.seats - 1
+            q1.save()
             event.save()
             return HttpResponse('Evento prenotato correttamente!')
     else:
