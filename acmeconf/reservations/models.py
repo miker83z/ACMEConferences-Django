@@ -10,6 +10,9 @@ class Event(models.Model):
     seats = models.IntegerField(default=0)
     date = models.DateTimeField('date published')
 
+    def __str__(self):
+        return self.name
+
 class EventReservation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for the reservation")
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
