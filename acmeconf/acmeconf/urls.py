@@ -18,7 +18,7 @@ from django.urls import include, path
 
 from django.conf.urls import url, include
 from django.contrib.auth.models import User
-from reservations.models import Event
+from reservations.models import Event, EventReservation
 from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
@@ -27,28 +27,38 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'username', 'email', 'is_staff')
 
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'name', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'is_open')
+
+# Serializers define the API representation.
+class UserReservationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = EventReservation
+        fields = ('id', 'event', 'reservation')
+
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-
-class EventSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Event
-        fields = ('name', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price')
 
 # ViewSets define the view behavior.
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+# ViewSets define the view behavior.
+class UserReservationViewSet(viewsets.ModelViewSet):
+    queryset = EventReservation.objects.all()
+    serializer_class = UserReservationSerializer
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 router.register(r'events', EventViewSet)
+router.register(r'user_reservations', UserReservationViewSet)
+
 
 
 urlpatterns = [

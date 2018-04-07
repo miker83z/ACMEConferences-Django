@@ -101,7 +101,7 @@ def reservation(request, event_id):
 
     #retrieve an event object by id
     original_event = Event.objects.get(id=event_id)
-    if original_event.available_seats > 0:
+    if original_event.available_seats > 0 or original_event.is_open == True:
         if request.method == 'POST':
             form = EventReservationForm(request.POST)
             if form.is_valid():
@@ -128,7 +128,7 @@ def reservation(request, event_id):
 
                 original_event.save()
                 event.save()
-                return HttpResponse('Evento prenotato correttamente!')
+                return HttpResponse('Prenotazione effettuata!')
         else:
             form = EventReservationForm()
         return render(request, 'reservations/reservation.html', {

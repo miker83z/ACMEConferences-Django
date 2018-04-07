@@ -5,11 +5,11 @@ from datetime import date
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=200)
-    location = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, default='name')
+    location = models.CharField(max_length=200, default='location')
     max_seats = models.IntegerField(default=0)
     available_seats = models.IntegerField(default=0)
-    date = models.DateTimeField('date published')
+    date = models.DateTimeField('date published', default='01-01-2020T12:00:00Z')
     ticket_price = models.IntegerField(default=0)
     available_money = models.IntegerField(default=0)
     is_open = models.BooleanField(default=True)
