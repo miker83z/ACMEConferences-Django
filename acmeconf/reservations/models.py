@@ -7,9 +7,12 @@ from datetime import date
 class Event(models.Model):
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
-    seats = models.IntegerField(default=0)
+    max_seats = models.IntegerField(default=0)
+    available_seats = models.IntegerField(default=0)
     date = models.DateTimeField('date published')
     ticket_price = models.IntegerField(default=0)
+    available_money = models.IntegerField(default=0)
+    is_open = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

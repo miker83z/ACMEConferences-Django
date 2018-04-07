@@ -39,7 +39,7 @@ router.register(r'users', UserViewSet)
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Event
-        fields = ('name', 'location', 'seats', 'date', 'ticket_price')
+        fields = ('name', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price')
 
 # ViewSets define the view behavior.
 class EventViewSet(viewsets.ModelViewSet):

@@ -11,6 +11,7 @@ from .models import Event
 from django.views.generic import DetailView
 from .forms import EventReservationForm
 from django.contrib.auth.models import User
+from zeep import Client
 
 def index(request):
     latest_event_list = Event.objects.order_by('-date')[:5]
@@ -97,21 +98,43 @@ class EventDetailView(generic.DetailView):
 
 
 def reservation(request, event_id):
-    if request.method == 'POST':
-        form = EventReservationForm(request.POST)
-        if form.is_valid():
-            event = event_id
-            event = form.save(commit=False)
-            event.reservation = request.user
 
-            #retrieve an event object by id
-            q1 = Event.objects.get(id=event_id)
-            q1.seats = q1.seats - 1
-            q1.save()
-            event.save()
-            return HttpResponse('Evento prenotato correttamente!')
+    #retrieve an event object by id
+    original_event = Event.objects.get(id=event_id)
+    if original_event.available_seats > 0:
+        if request.method == 'POST':
+            form = EventReservationForm(request.POST)
+            if form.is_valid():
+                event = event_id
+                event = form.save()
+                event.reservation = request.user
+
+                original_event.available_seats = original_event.available_seats - 1
+
+                original_event.available_money = original_event.available_money + original_event.ticket_price
+
+                #establish the connection to the bank server
+                client = Client('http://localhost/Banca/server.wsdl')
+
+                #get bank username and password from the validate form
+                name = form.cleaned_data['name']
+                password = form.cleaned_data['password']
+
+                #send form data to the bank login service
+                risposta = client.service.userLogin(name, password)
+
+                client.service.transferPayment(2.3, 'michele', risposta['userID'])
+                client.service.userLogout(risposta['userID'])
+
+                original_event.save()
+                event.save()
+                return HttpResponse('Evento prenotato correttamente!')
+        else:
+            form = EventReservationForm()
+        return render(request, 'reservations/reservation.html', {
+            'form': form
+        })
     else:
-        form = EventReservationForm()
-    return render(request, 'reservations/reservation.html', {
-        'form': form
-    })
+        original_event.is_open = False
+        original_event.save()
+        return HttpResponse('Posti esauriti/evento chiuso!')
