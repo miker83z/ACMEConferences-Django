@@ -1,11 +1,13 @@
 {% extends 'reservations/base_visitor.html' %}
 
 {% block body %}
-  <h1>Event: {{ event.name }}</h1>
+  <h1>{{ event.name }}</h1>
 
-  <p><strong>Name:</strong> <a href="">{{ event.name }}</a></p> 
+  <p><strong>Name:</strong> <a href="">{{ event.name }}</a></p>
   <p><strong>Location:</strong> {{ event.location }}</p>
-  <p><strong>Seats:</strong> {{ event.seats }}</p>
+  <p><strong>Max Seats:</strong> {{ event.max_seats }}</p>
+  <p><strong>Available Seats:</strong> {{ event.available_seats }}</p>
+  <p><strong>Ticket Price:</strong> {{ event.ticket_price }}</p>
   <p><strong>Date:</strong> {{ event.date }}</p>
 
 {% endblock %}

@@ -28,6 +28,7 @@
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
                 <li class="{% block register_active %}{% endblock %}"><a href="{% url 'reservations:register' %}">Register</a></li>
+                <li class="{% block login_user %}{% endblock %}"><a href="{% url 'reservations:login_user' %}">Login</a></li>
 
             </ul>
         </div>

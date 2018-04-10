@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'zeep',
+    'rest_framework_nested',
+    'rest_framework_extensions'
 ]
 
 MIDDLEWARE = [

@@ -19,6 +19,5 @@ class Event(models.Model):
 
 
 class EventReservation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for the reservation")
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
-    reservation = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.CharField(max_length=200, default='name')

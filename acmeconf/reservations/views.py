@@ -107,7 +107,7 @@ def reservation(request, event_id):
             if form.is_valid():
                 event = event_id
                 event = form.save()
-                event.reservation = request.user
+                event.user = request.user.id
 
                 original_event.available_seats = original_event.available_seats - 1
 
@@ -138,3 +138,5 @@ def reservation(request, event_id):
         original_event.is_open = False
         original_event.save()
         return HttpResponse('Posti esauriti/evento chiuso!')
+
+#testing

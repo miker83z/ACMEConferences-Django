@@ -20,12 +20,21 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from reservations.models import Event, EventReservation
 from rest_framework import routers, serializers, viewsets
+from rest_framework_nested import routers
+from rest_framework.routers import DefaultRouter
+from rest_framework.response import Response
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework.serializers import HyperlinkedModelSerializer
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from django.shortcuts import get_object_or_404
+from rest_framework_extensions.mixins import NestedViewSetMixin
+from rest_framework_extensions.routers import NestedRouterMixin
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email', 'is_staff')
+        fields = ('id', 'username', 'email')
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -36,29 +45,37 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 class UserReservationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventReservation
-        fields = ('id', 'event', 'reservation')
+        fields = ('id', 'event', 'user')
 
 # ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 # ViewSets define the view behavior.
-class EventViewSet(viewsets.ModelViewSet):
+class EventViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
 # ViewSets define the view behavior.
-class UserReservationViewSet(viewsets.ModelViewSet):
+class UserReservationViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = EventReservation.objects.all()
     serializer_class = UserReservationSerializer
 
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'events', EventViewSet)
-router.register(r'user_reservations', UserReservationViewSet)
+class NestedDefaultRouter(NestedRouterMixin, DefaultRouter):
+    pass
 
+router = NestedDefaultRouter()
+
+events_router = router.register('event_reservations', UserReservationViewSet)
+events_router = router.register('users', UserViewSet)
+events_router = router.register('events', EventViewSet)
+
+#nested_links
+events_router.register(
+    'user_reservations', UserReservationViewSet,
+    base_name='booking',
+    parents_query_lookups=['event'])
 
 
 urlpatterns = [
