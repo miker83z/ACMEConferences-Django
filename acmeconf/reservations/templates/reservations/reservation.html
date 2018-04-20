@@ -1,7 +1,10 @@
+
+
 <!-- to display the form the directory is localhost/reservations/register -->
 {% extends 'reservations/base_visitor.html' %}
 {% block title %}Event Reservation{% endblock %}
 {% block register_active %}active{% endblock %}
+{% load staticfiles %}
 
 {% block body %}
 <div class="container-fluid">
@@ -15,6 +18,7 @@
                         <p><strong>{{ error_message }}</strong></p>
                     {% endif %}
                     <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                    <img src="{% static "ebank.jpg" %}" style="max-height: 83px; max-width: 200px;"/>
                         {% csrf_token %}
                         {{ form.as_p }}
                         <div class="form-group">

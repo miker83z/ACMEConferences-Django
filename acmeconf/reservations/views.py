@@ -13,6 +13,7 @@ from .forms import EventReservationForm
 from django.contrib.auth.models import User
 from zeep import Client
 
+
 def index(request):
     latest_event_list = Event.objects.order_by('-date')[:5]
     template = loader.get_template('reservations/index.html')
@@ -66,6 +67,7 @@ def register(request):
         user = form.save(commit=False)
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
+         
         user.set_password(password)
         user.save()
         user = authenticate(username=username, password=password)
@@ -98,17 +100,15 @@ class EventDetailView(generic.DetailView):
 
 
 def reservation(request, event_id):
-
     #retrieve an event object by id
     original_event = Event.objects.get(id=event_id)
     if original_event.available_seats > 0 or original_event.is_open == True:
         if request.method == 'POST':
             form = EventReservationForm(request.POST)
             if form.is_valid():
-                event = event_id
                 event = form.save()
                 event.user = request.user.id
-
+                event.event = original_event.id
                 original_event.available_seats = original_event.available_seats - 1
 
                 original_event.available_money = original_event.available_money + original_event.ticket_price

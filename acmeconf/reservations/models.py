@@ -19,5 +19,5 @@ class Event(models.Model):
 
 
 class EventReservation(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
+    event = models.CharField(max_length=200, default='event')
     user = models.CharField(max_length=200, default='name')
