@@ -19,6 +19,7 @@
                     {% endif %}
                     <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                     <img src="{% static "ebank.jpg" %}" style="max-height: 83px; max-width: 200px;"/>
+                    <div class="well"><font color="FireBrick"><strong>Please login with your EBank account to pay the ticket via Wire Transfer</strong></font></div>
                         {% csrf_token %}
                         {{ form.as_p }}
                         <div class="form-group">

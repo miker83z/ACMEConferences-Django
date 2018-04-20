@@ -12,6 +12,7 @@ from django.views.generic import DetailView
 from .forms import EventReservationForm
 from django.contrib.auth.models import User
 from zeep import Client
+from django.shortcuts import render_to_response
 
 
 def index(request):
@@ -67,7 +68,7 @@ def register(request):
         user = form.save(commit=False)
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
-         
+
         user.set_password(password)
         user.save()
         user = authenticate(username=username, password=password)
@@ -128,7 +129,7 @@ def reservation(request, event_id):
 
                 original_event.save()
                 event.save()
-                return HttpResponse('Prenotazione effettuata!')
+                return render_to_response('reservations/booked.html')
         else:
             form = EventReservationForm()
         return render(request, 'reservations/reservation.html', {
@@ -137,6 +138,6 @@ def reservation(request, event_id):
     else:
         original_event.is_open = False
         original_event.save()
-        return HttpResponse('Posti esauriti/evento chiuso!')
+        return render_to_response('reservations/closed.html')
 
 #testing

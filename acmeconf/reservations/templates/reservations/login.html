@@ -3,6 +3,10 @@
 {% block login_active %}active{% endblock %}
 
 {% block body %}
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'reservations/style.css' %}"/>
 <div class="container-fluid">
 
     <div class="row">
