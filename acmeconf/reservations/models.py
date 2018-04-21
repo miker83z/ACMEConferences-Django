@@ -9,8 +9,9 @@ class Event(models.Model):
     location = models.CharField(max_length=200, default='location')
     max_seats = models.IntegerField(default=0)
     available_seats = models.IntegerField(default=0)
-    date = models.DateTimeField('date published', default='01-01-2020T12:00:00Z')
+    date = models.DateTimeField('date published', auto_now=True)
     ticket_price = models.IntegerField(default=0)
+    staff_ticket_price = models.IntegerField(default=0)
     available_money = models.IntegerField(default=0)
     is_open = models.BooleanField(default=True)
 

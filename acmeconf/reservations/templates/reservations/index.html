@@ -44,7 +44,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if latest_event_list %}
-                        <h1><strong>Cooming Soon Events</strong></h1>
+                        <h1><strong>Latest Events List</strong></h1>
                         <ul>
                         {% for event in latest_event_list %}
                             <li><h3><a href="/reservations/{{ event.id }}/">{{ event.name }}</a></h3></li>

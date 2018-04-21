@@ -8,8 +8,15 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'is_staff']
         exclude = ()
+        labels = {
+            'is_staff': ('Conference Speaker'),
+        }
+        help_texts = {
+            'username': None,
+            'is_staff': ('Check it if you are a conference speaker'),
+        }
 
 class EventReservationForm(forms.ModelForm):
     name = forms.CharField(label='Name', max_length=100)

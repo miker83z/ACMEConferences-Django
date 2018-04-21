@@ -22,6 +22,7 @@
                     <div class="well"><font color="FireBrick"><strong>Please login with your EBank account to pay the ticket via Wire Transfer</strong></font></div>
                         {% csrf_token %}
                         {{ form.as_p }}
+                        <p><strong>Ticket price: {{ price }}$</strong></p>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-success">Submit</button>

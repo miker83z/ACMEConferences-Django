@@ -13,6 +13,8 @@ from .forms import EventReservationForm
 from django.contrib.auth.models import User
 from zeep import Client
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 
 def index(request):
@@ -100,10 +102,11 @@ class EventDetailView(generic.DetailView):
     model = Event
 
 
+@login_required
 def reservation(request, event_id):
     #retrieve an event object by id
     original_event = Event.objects.get(id=event_id)
-    if original_event.available_seats > 0 or original_event.is_open == True:
+    if original_event.available_seats > 0 and original_event.is_open == True:
         if request.method == 'POST':
             form = EventReservationForm(request.POST)
             if form.is_valid():
@@ -124,7 +127,11 @@ def reservation(request, event_id):
                 #send form data to the bank login service
                 risposta = client.service.userLogin(name, password)
 
-                client.service.transferPayment(2.3, 'michele', risposta['userID'])
+                if request.user.is_staff == True:
+                    client.service.transferPayment(original_event.staff_ticket_price, 'michele', risposta['userID'])
+                else:
+                    client.service.transferPayment(original_event.ticket_price, 'michele', risposta['userID'])
+
                 client.service.userLogout(risposta['userID'])
 
                 original_event.save()
@@ -132,12 +139,20 @@ def reservation(request, event_id):
                 return render_to_response('reservations/booked.html')
         else:
             form = EventReservationForm()
-        return render(request, 'reservations/reservation.html', {
-            'form': form
-        })
+            if request.user.is_staff == True:
+                return render(request, 'reservations/reservation.html', {
+                    'form': form,
+                    'price': original_event.staff_ticket_price
+                })
+            else:
+                return render(request, 'reservations/reservation.html', {
+                    'form': form,
+                    'price': original_event.ticket_price
+                })
     else:
         original_event.is_open = False
         original_event.save()
         return render_to_response('reservations/closed.html')
+
 
 #testing
