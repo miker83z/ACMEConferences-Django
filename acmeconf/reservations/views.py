@@ -104,18 +104,21 @@ class EventDetailView(generic.DetailView):
 
 @login_required
 def reservation(request, event_id):
+
     #retrieve an event object by id
     original_event = Event.objects.get(id=event_id)
+
     if original_event.available_seats > 0 and original_event.is_open == True:
+
         if request.method == 'POST':
             form = EventReservationForm(request.POST)
+
             if form.is_valid():
+
                 event = form.save()
                 event.user = request.user.id
                 event.event = original_event.id
                 original_event.available_seats = original_event.available_seats - 1
-
-                original_event.available_money = original_event.available_money + original_event.ticket_price
 
                 #establish the connection to the bank server
                 client = Client('http://localhost/Banca/server.wsdl')
@@ -128,8 +131,10 @@ def reservation(request, event_id):
                 risposta = client.service.userLogin(name, password)
 
                 if request.user.is_staff == True:
+                    original_event.available_money = original_event.available_money + original_event.staff_ticket_price
                     client.service.transferPayment(original_event.staff_ticket_price, 'michele', risposta['userID'])
                 else:
+                    original_event.available_money = original_event.available_money + original_event.ticket_price
                     client.service.transferPayment(original_event.ticket_price, 'michele', risposta['userID'])
 
                 client.service.userLogout(risposta['userID'])
@@ -137,18 +142,22 @@ def reservation(request, event_id):
                 original_event.save()
                 event.save()
                 return render_to_response('reservations/booked.html')
+
         else:
             form = EventReservationForm()
+
             if request.user.is_staff == True:
                 return render(request, 'reservations/reservation.html', {
                     'form': form,
                     'price': original_event.staff_ticket_price
                 })
+
             else:
                 return render(request, 'reservations/reservation.html', {
                     'form': form,
                     'price': original_event.ticket_price
                 })
+                
     else:
         original_event.is_open = False
         original_event.save()
