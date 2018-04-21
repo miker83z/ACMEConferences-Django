@@ -30,6 +30,7 @@
       </div>
 
           <ul class="nav navbar-nav">
+              <li class="{% block index %}{% endblock %}"><a href="/reservations"><strong>Home</strong></a></li>
               <li class="{% block register_active %}{% endblock %}"><a href="{% url 'reservations:register' %}"><strong>Register</strong></a></li>
               <li class="{% block login_user %}{% endblock %}"><a href="{% url 'reservations:login_user' %}"><strong>Login</strong></a></li>
           </ul>
@@ -65,7 +66,7 @@
   <div class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
       <p class="navbar-text pull-left">© 2018 - ACMEConferences</p>
-      <a href="chirpterlink" class="navbar-btn btn-danger btn pull-right">
-      <span class="glyphicon glyphicon-star"></span>Follow ACME on Chirpter</a>
+      <a href="chirpterlink" class="navbar-btn btn-info btn pull-right">
+      <span class="glyphicon glyphicon-thumbs-up"></span>  Follow ACME on Chirpter</a>
     </div>
   </div>
