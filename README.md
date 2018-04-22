@@ -4,6 +4,13 @@ Event registration Django Microservice for AcmeConference.
 
 # Api Access
 
+The account authorized is:
+
+Username | Password | Token
+------------ | ------------- | -------------
+acmeconferences | 4cm3c0nf | 12cfa6232776a3213193c9a43c1c5ba27c68d5e2
+ 
+
 ## Curl ##
 
 To obtain an **authorization token** the request that must be send with **Curl** is that: 
