@@ -19,7 +19,7 @@ To obtain the event list with a **GET request** the **Curl** command is:
 # Api resources
 
 Resource | Link | Request
------------- | -------------
+------------ | ------------- | -------------
 Event Reservations | localhost/event_reservations/ | GET, POST
 Users | localhost/users/ | GET, POST
 Events | localhost/events/ | GET, POST
