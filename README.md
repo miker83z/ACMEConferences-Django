@@ -4,6 +4,8 @@ Event registration Django Microservice for AcmeConference.
 
 # Api Access
 
+## Curl ##
+
 To obtain an **authorization token** the request that must be send with **Curl** is that: 
 
 *curl -X POST -d "username=acmeconferences&password=4cm3c0nf" http://127.0.0.1:8000/reservations/api-token-auth/*
@@ -15,6 +17,12 @@ The response is:
 To obtain the event list with a **GET request** the **Curl** command is:
 
 *curl -H "Content-Type: application/json" -H "Authorization: Token 12cfa6232776a3213193c9a43c1c5ba27c68d5e2" http://localhost:8000/events/*
+
+## Java ##
+
+For all request with Java ApacheHTTP the header with token authentication must be set as follow:
+
+*httpRequest.addHeader("Authorization", "Token 12cfa6232776a3213193c9a43c1c5ba27c68d5e2");*
 
 # Api resources
 
