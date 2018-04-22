@@ -24,5 +24,5 @@ Event Reservations | localhost/event_reservations/ | GET, POST
 Users | localhost/users/ | GET, POST
 Events | localhost/events/ | GET, POST
 Single Event | localhost/events/id/ | GET, PUT, PATCH, DELETE
-Single User | localhost/users/id | GET, PUT, PATCH, DELETE
+Single User | localhost/users/id/ | GET, PUT, PATCH, DELETE
 User reservations by event | localhost/events/id/user_reservations/ | GET, POST
