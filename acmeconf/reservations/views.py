@@ -16,6 +16,8 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
+from rest_framework.authtoken import views as authviews
+
 
 def index(request):
     latest_event_list = Event.objects.order_by('-date')[:5]
@@ -157,7 +159,7 @@ def reservation(request, event_id):
                     'form': form,
                     'price': original_event.ticket_price
                 })
-                
+
     else:
         original_event.is_open = False
         original_event.save()

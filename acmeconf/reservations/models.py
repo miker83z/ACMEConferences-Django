@@ -3,6 +3,15 @@ import uuid #creates unique istance for the event prenotation
 from django.contrib.auth.models import User
 from datetime import date
 
+# Django rest authentication includes
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+from django.conf import settings
+
+# Django rest authentication includes
+
 
 class Event(models.Model):
     name = models.CharField(max_length=200, default='name')
@@ -22,3 +31,11 @@ class Event(models.Model):
 class EventReservation(models.Model):
     event = models.CharField(max_length=200, default='event')
     user = models.CharField(max_length=200, default='name')
+
+
+# This code is triggered whenever a new user has been created and saved to the database
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
