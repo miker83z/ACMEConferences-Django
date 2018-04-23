@@ -11,7 +11,7 @@ Username | Password | Token
 acmeconferences | 4cm3c0nf | 12cfa6232776a3213193c9a43c1c5ba27c68d5e2
  
 
-## Curl ##
+## Curl (Testing)##
 
 To obtain an **authorization token** the request that must be send with **Curl** is that: 
 
@@ -24,6 +24,10 @@ The response is:
 To obtain the event list with a **GET request** the **Curl** command is:
 
 *curl -H "Content-Type: application/json" -H "Authorization: Token 12cfa6232776a3213193c9a43c1c5ba27c68d5e2" http://localhost:8000/events/*
+
+**Delete Request**
+
+*curl -X DELETE -H "Authorization: Token 12cfa6232776a3213193c9a43c1c5ba27c68d5e2" http://127.0.0.1:8000/events/id/*
 
 ## Java ##
 
