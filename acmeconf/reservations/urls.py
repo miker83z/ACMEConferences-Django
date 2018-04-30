@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     path('<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
     url(r'^api-token-auth/', authviews.obtain_auth_token),
+    url(r'^upload/$', views.model_form_upload, name='upload')
 ]

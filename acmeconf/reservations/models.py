@@ -15,6 +15,10 @@ from django.conf import settings
 
 class Event(models.Model):
     name = models.CharField(max_length=200, default='name')
+    nation = models.CharField(max_length=200, default='nation')
+    city = models.CharField(max_length=200, default='city')
+    address = models.CharField(max_length=200, default='address')
+    cap = models.CharField(max_length=200, default='cap')
     location = models.CharField(max_length=200, default='location')
     max_seats = models.IntegerField(default=0)
     available_seats = models.IntegerField(default=0)
@@ -31,6 +35,12 @@ class Event(models.Model):
 class EventReservation(models.Model):
     event = models.CharField(max_length=200, default='event')
     user = models.CharField(max_length=200, default='name')
+    is_staff = models.BooleanField(default=False)
+
+class Document(models.Model):
+    name = models.CharField(max_length=255, default='name')
+    document = models.FileField(upload_to='reservations/static/documents')
+    reservation = models.CharField(max_length=200, default='reservation')
 
 
 # This code is triggered whenever a new user has been created and saved to the database

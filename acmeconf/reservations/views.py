@@ -8,14 +8,17 @@ from .forms import UserForm
 from django.http import HttpResponse
 from django.template import loader
 from .models import Event
+from .models import EventReservation
 from django.views.generic import DetailView
 from .forms import EventReservationForm
+from .forms import DocumentForm
 from django.contrib.auth.models import User
 from zeep import Client
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from rest_framework.authtoken import views as authviews
 
 
@@ -103,6 +106,12 @@ def login_user(request):
 class EventDetailView(generic.DetailView):
     model = Event
 
+    #def get(self, request, pk):
+    #    try:
+    #        original_reservation = EventReservation.objects.get(event=33, user=request.user.id, is_staff=True)
+    #    except EventReservation.DoesNotExist:
+    #        return EventDetailView
+    #    return redirect('reservations:upload')
 
 @login_required
 def reservation(request, event_id):
@@ -132,7 +141,7 @@ def reservation(request, event_id):
                 #send form data to the bank login service
                 risposta = client.service.userLogin(name, password)
 
-                if request.user.is_staff == True:
+                if event.is_staff == True:
                     original_event.available_money = original_event.available_money + original_event.staff_ticket_price
                     client.service.transferPayment(original_event.staff_ticket_price, 'michele', risposta['userID'])
                 else:
@@ -151,13 +160,15 @@ def reservation(request, event_id):
             if request.user.is_staff == True:
                 return render(request, 'reservations/reservation.html', {
                     'form': form,
-                    'price': original_event.staff_ticket_price
+                    'price_staff': original_event.staff_ticket_price,
+                    'price_standard': original_event.ticket_price
                 })
 
             else:
                 return render(request, 'reservations/reservation.html', {
                     'form': form,
-                    'price': original_event.ticket_price
+                    'price_staff': original_event.staff_ticket_price,
+                    'price_standard': original_event.ticket_price
                 })
 
     else:
@@ -166,4 +177,14 @@ def reservation(request, event_id):
         return render_to_response('reservations/closed.html')
 
 
-#testing
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('reservations:index')
+    else:
+        form = DocumentForm()
+    return render(request, 'reservations/model_form_upload.html', {
+        'form': form
+    })
