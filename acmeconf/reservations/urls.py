@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from django.conf.urls import url
-import booking
 
 from rest_framework.authtoken import views as authviews
 

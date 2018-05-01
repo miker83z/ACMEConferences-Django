@@ -20,7 +20,6 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from reservations.models import Event, EventReservation
 from rest_framework import routers, serializers, viewsets
-from rest_framework_nested import routers
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
 #from rest_framework_nested.relations import NestedHyperlinkedRelatedField
