@@ -1,5 +1,3 @@
-
-
 <!-- Loads the path to your static files -->
 {% load staticfiles %}
 
@@ -50,15 +48,19 @@
         <div class="col-sm-12 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    {% if latest_event_list %}
-                        <h1><strong>Latest Events List</strong></h1>
+                    {% if user_event_list %}
+                        <h3><strong>User Reservations</strong></h3>
                         <ul>
-                        {% for event in latest_event_list %}
-                            <li><h3><a href="/reservations/{{ event.id }}/">{{ event.name }}</a></h3></li>
+                        {% for x in user_event_list %}
+                          {% for y in event_list %}
+                            {% if x.event == y.id %}
+                              <li><h3><a href="/reservations/{{ y.id }}/">{{ y.name }}</a></h3></li>
+                            {% endif %}
+                          {% endfor %}
                         {% endfor %}
                         </ul>
                     {% else %}
-                        <p>No events are available.</p>
+                        <p>No event reservations</p>
                     {% endif %}
                 </div>
             </div>

@@ -126,7 +126,7 @@ def reservation(request, event_id):
     #retrieve an event object by id
     original_event = Event.objects.get(id=event_id)
 
-    if original_event.available_seats > 0 and original_event.is_open == True:
+    if original_event.available_seats > 0 and original_event.is_open == True and original_event.is_open_contr == True:
 
         if request.method == 'POST':
             form = EventReservationForm(request.POST)
@@ -202,3 +202,28 @@ def model_form_upload(request, event_id):
     return render(request, 'reservations/model_form_upload.html', {
         'form': form
     })
+
+def user_reservations(request):
+    user_event_list = EventReservation.objects.filter(user=request.user.id)
+
+    event_list = Event.objects.all()
+
+    template = loader.get_template('reservations/user_reservations.html')
+    context = {
+        'user_event_list': user_event_list,
+        'event_list': event_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+def delete_reservation(request, event_id):
+
+    delete_event = EventReservation.objects.filter(event=event_id, user=request.user.id)
+    delete_event.delete()
+
+    template = loader.get_template('reservations/delete_confirm.html')
+
+    context = {
+            'delete_event': delete_event,
+    }
+
+    return HttpResponse(template.render(context, request))

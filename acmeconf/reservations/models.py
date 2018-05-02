@@ -16,10 +16,10 @@ from jsonfield import JSONField
 
 class Event(models.Model):
     name = models.CharField(max_length=200, default='name')
-    dates = JSONField(models.CharField(max_length=200), default={})
-    subsStart = models.CharField(max_length=200, default='subsStart')
-    contDeadline = models.CharField(max_length=200, default='contDeadline')
-    subsDeadline = models.CharField(max_length=200, default='subsDeadline')
+    dates = JSONField()
+    subsStart = models.DateTimeField('subscriptions start', auto_now=True)
+    contDeadline = models.DateTimeField('contribution deadline', auto_now=True)
+    subsDeadline = models.DateTimeField('subscriptions deadline', auto_now=True)
     nation = models.CharField(max_length=200, default='nation')
     city = models.CharField(max_length=200, default='city')
     address = models.CharField(max_length=200, default='address')
@@ -31,7 +31,8 @@ class Event(models.Model):
     ticket_price = models.IntegerField(default=0)
     staff_ticket_price = models.IntegerField(default=0)
     available_money = models.IntegerField(default=0)
-    is_open = models.BooleanField(default=True)
+    is_open = models.BooleanField(default=False)
+    is_open_contr = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
