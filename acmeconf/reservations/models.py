@@ -10,11 +10,17 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 
-# Django rest authentication includes
+# List Import
 
+from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import ArrayField
 
 class Event(models.Model):
     name = models.CharField(max_length=200, default='name')
+
+    subsStart = models.CharField(max_length=200, default='subsStart')
+    contDeadline = models.CharField(max_length=200, default='contDeadline')
+    subsDeadline = models.CharField(max_length=200, default='subsDeadline')
     nation = models.CharField(max_length=200, default='nation')
     city = models.CharField(max_length=200, default='city')
     address = models.CharField(max_length=200, default='address')
@@ -33,12 +39,12 @@ class Event(models.Model):
 
 
 class EventReservation(models.Model):
-    event = models.CharField(max_length=200, default='event')
-    user = models.CharField(max_length=200, default='name')
+    event = models.IntegerField(default=0)
+    user = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
 
 class Document(models.Model):
-    name = models.CharField(max_length=255, default='name')
+    name = models.CharField(max_length=255)
     document = models.FileField(upload_to='reservations/static/documents')
     reservation = models.CharField(max_length=200, default='reservation')
 

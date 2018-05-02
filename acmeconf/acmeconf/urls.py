@@ -22,9 +22,7 @@ from reservations.models import Event, EventReservation
 from rest_framework import routers, serializers, viewsets
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
-#from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework.serializers import HyperlinkedModelSerializer
-#from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework_extensions.mixins import NestedViewSetMixin
 from rest_framework_extensions.routers import NestedRouterMixin

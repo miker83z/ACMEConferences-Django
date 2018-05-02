@@ -23,7 +23,7 @@ from rest_framework.authtoken import views as authviews
 
 
 def index(request):
-    latest_event_list = Event.objects.order_by('-date')[:5]
+    latest_event_list = Event.objects.order_by('-date')[:100]
     template = loader.get_template('reservations/index.html')
     context = {
         'latest_event_list': latest_event_list,
@@ -106,12 +106,19 @@ def login_user(request):
 class EventDetailView(generic.DetailView):
     model = Event
 
+    def get_context_data(self, **kwargs):
+        ctx = super(EventDetailView, self).get_context_data(**kwargs)
+        ctx['reservations'] = EventReservation.objects.all()
+        return ctx
+
     #def get(self, request, pk):
     #    try:
     #        original_reservation = EventReservation.objects.get(event=33, user=request.user.id, is_staff=True)
     #    except EventReservation.DoesNotExist:
-    #        return EventDetailView
+    #        return HttpResponseRedirect(reverse('reservations:event_detail', args=[pk]))
+    #        break
     #    return redirect('reservations:upload')
+
 
 @login_required
 def reservation(request, event_id):
@@ -177,11 +184,18 @@ def reservation(request, event_id):
         return render_to_response('reservations/closed.html')
 
 
-def model_form_upload(request):
+def model_form_upload(request, event_id):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            upload = form.save()
+
+            original_reservation = EventReservation.objects.get(event=event_id, user=request.user.id)
+
+            upload.reservation = original_reservation.id
+
+            upload.save()
+
             return redirect('reservations:index')
     else:
         form = DocumentForm()
