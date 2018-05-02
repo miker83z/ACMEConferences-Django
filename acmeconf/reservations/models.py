@@ -12,12 +12,11 @@ from django.conf import settings
 
 # List Import
 
-from django.contrib.postgres.fields import JSONField
-from django.contrib.postgres.fields import ArrayField
+from jsonfield import JSONField
 
 class Event(models.Model):
     name = models.CharField(max_length=200, default='name')
-
+    dates = JSONField(models.CharField(max_length=200), default={})
     subsStart = models.CharField(max_length=200, default='subsStart')
     contDeadline = models.CharField(max_length=200, default='contDeadline')
     subsDeadline = models.CharField(max_length=200, default='subsDeadline')

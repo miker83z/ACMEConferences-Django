@@ -36,7 +36,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'name', 'city', 'address', 'cap', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'is_open')
+        fields = ('id', 'name', 'dates', 'subsStart', 'contDeadline', 'subsDeadline', 'city', 'address', 'cap', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'is_open')
 
 # Serializers define the API representation.
 class UserReservationSerializer(serializers.HyperlinkedModelSerializer):
