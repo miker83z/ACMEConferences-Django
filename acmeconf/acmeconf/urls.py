@@ -34,6 +34,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'username', 'email')
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
+    dates = serializers.JSONField()
     class Meta:
         model = Event
         fields = ('id', 'name', 'dates', 'subsStart', 'contDeadline', 'subsDeadline', 'city', 'address', 'cap', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'staff_ticket_price', 'is_open', 'is_open_contr')
