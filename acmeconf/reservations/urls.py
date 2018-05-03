@@ -14,5 +14,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     path('<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
     url(r'^api-token-auth/', authviews.obtain_auth_token),
-    url(r'^upload/$', views.model_form_upload, name='upload')
+    url(r'^(?P<event_id>[0-9]+)/upload/$', views.model_form_upload, name='upload'),
+    url(r'^user_reservations/$', views.user_reservations, name='user_reservations'),
+    url(r'^(?P<event_id>[0-9]+)/delete_confirm/$', views.delete_reservation, name='delete_object')
 ]

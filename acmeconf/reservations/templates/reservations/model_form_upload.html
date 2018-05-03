@@ -7,10 +7,12 @@
             <div class="panel panel-default">
                 <div class="panel-body">
 
+                    <h3>Upload your contribute</h3>
+
                     <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Upload</button>
+                    <button type="submit" class="navbar-btn btn-danger btn pull-left">Upload</button>
                     </form>
 
                     <a href="{% url 'reservations:index' %}" class="navbar-btn btn-danger btn pull-right">Return to Homepage</a>

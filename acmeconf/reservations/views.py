@@ -20,10 +20,11 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.authtoken import views as authviews
+import json
 
 
 def index(request):
-    latest_event_list = Event.objects.order_by('-date')[:5]
+    latest_event_list = Event.objects.order_by('-date')[:100]
     template = loader.get_template('reservations/index.html')
     context = {
         'latest_event_list': latest_event_list,
@@ -105,13 +106,20 @@ def login_user(request):
 
 class EventDetailView(generic.DetailView):
     model = Event
+    def get_context_data(self, **kwargs):
+
+        ctx = super(EventDetailView, self).get_context_data(**kwargs)
+        ctx['reservations'] = EventReservation.objects.all()
+        return ctx
 
     #def get(self, request, pk):
     #    try:
     #        original_reservation = EventReservation.objects.get(event=33, user=request.user.id, is_staff=True)
     #    except EventReservation.DoesNotExist:
-    #        return EventDetailView
+    #        return HttpResponseRedirect(reverse('reservations:event_detail', args=[pk]))
+    #        break
     #    return redirect('reservations:upload')
+
 
 @login_required
 def reservation(request, event_id):
@@ -119,7 +127,7 @@ def reservation(request, event_id):
     #retrieve an event object by id
     original_event = Event.objects.get(id=event_id)
 
-    if original_event.available_seats > 0 and original_event.is_open == True:
+    if original_event.available_seats > 0 and original_event.is_open == True and original_event.is_open_contr == True:
 
         if request.method == 'POST':
             form = EventReservationForm(request.POST)
@@ -177,14 +185,46 @@ def reservation(request, event_id):
         return render_to_response('reservations/closed.html')
 
 
-def model_form_upload(request):
+def model_form_upload(request, event_id):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            upload = form.save()
+
+            original_reservation = EventReservation.objects.get(event=event_id, user=request.user.id)
+
+            upload.reservation = original_reservation.id
+
+            upload.save()
+
             return redirect('reservations:index')
     else:
         form = DocumentForm()
     return render(request, 'reservations/model_form_upload.html', {
         'form': form
     })
+
+def user_reservations(request):
+    user_event_list = EventReservation.objects.filter(user=request.user.id)
+
+    event_list = Event.objects.all()
+
+    template = loader.get_template('reservations/user_reservations.html')
+    context = {
+        'user_event_list': user_event_list,
+        'event_list': event_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+def delete_reservation(request, event_id):
+
+    delete_event = EventReservation.objects.filter(event=event_id, user=request.user.id)
+    delete_event.delete()
+
+    template = loader.get_template('reservations/delete_confirm.html')
+
+    context = {
+            'delete_event': delete_event,
+    }
+
+    return HttpResponse(template.render(context, request))

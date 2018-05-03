@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>{% block title %}Reservations{% endblock %}</title>
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'reservation/style.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}"/>
@@ -34,6 +33,7 @@
                 <li class="{% block index %}{% endblock %}"><a href="/reservations"><strong>Home</strong></a></li>
                 <li class="{% block register %}{% endblock %}"><a href="{% url 'reservations:register' %}"><strong>Register</strong></a></li>
                 <li class="{% block login_user %}{% endblock %}"><a href="{% url 'reservations:login_user' %}"><strong>Login</strong></a></li>
+                <li class="{% block user_reservations %}{% endblock %}"><a href="{% url 'reservations:user_reservations' %}"><strong>Your Reservations</strong></a></li>
             </ul>
       </div>
     </div>
