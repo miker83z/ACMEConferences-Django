@@ -28,14 +28,18 @@ class Event(models.Model):
     max_seats = models.IntegerField(default=0)
     available_seats = models.IntegerField(default=0)
     date = models.DateTimeField('date published', auto_now=True)
-    ticket_price = models.IntegerField(default=0)
-    staff_ticket_price = models.IntegerField(default=0)
+    ticket_price = models.FloatField(default=0)
+    staff_ticket_price = models.FloatField(default=0)
     available_money = models.IntegerField(default=0)
     is_open = models.BooleanField(default=False)
     is_open_contr = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.available_seats = self.max_seats
+        super(Event, self).save(*args, **kwargs)
 
 
 class EventReservation(models.Model):
