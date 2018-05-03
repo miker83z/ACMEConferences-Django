@@ -16,10 +16,10 @@ from jsonfield import JSONField
 
 class Event(models.Model):
     name = models.CharField(max_length=200, default='name')
-    dates = JSONField()
-    subsStart = models.DateTimeField('subscriptions start', auto_now=True)
-    contDeadline = models.DateTimeField('contribution deadline', auto_now=True)
-    subsDeadline = models.DateTimeField('subscriptions deadline', auto_now=True)
+    dates = JSONField(blank=True, null=True)
+    subsStart = models.CharField(max_length=200, default='', blank=True, null=True)
+    contDeadline = models.CharField(max_length=200, default='', blank=True, null=True)
+    subsDeadline = models.CharField(max_length=200, default='', blank=True, null=True)
     nation = models.CharField(max_length=200, default='nation')
     city = models.CharField(max_length=200, default='city')
     address = models.CharField(max_length=200, default='address')
