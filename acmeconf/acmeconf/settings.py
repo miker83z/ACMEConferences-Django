@@ -25,7 +25,7 @@ SECRET_KEY = '-uvh0ao2h^0=@r*t^=09ejt2vsy^uba)nk&k^9p8u)ge@6lz!8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'zeep',
-    'rest_framework_nested',
     'rest_framework_extensions',
     'rest_framework.authtoken'
 ]
