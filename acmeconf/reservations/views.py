@@ -20,6 +20,7 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.authtoken import views as authviews
+import json
 
 
 def index(request):
@@ -105,8 +106,8 @@ def login_user(request):
 
 class EventDetailView(generic.DetailView):
     model = Event
-
     def get_context_data(self, **kwargs):
+
         ctx = super(EventDetailView, self).get_context_data(**kwargs)
         ctx['reservations'] = EventReservation.objects.all()
         return ctx
