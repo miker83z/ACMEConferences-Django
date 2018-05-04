@@ -38,8 +38,11 @@ class Event(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.available_seats = self.max_seats
+        #equipara max seats a available seats solo se l'evento è in fase di creazione
+        if self.pk is None:
+            self.available_seats = self.max_seats
         super(Event, self).save(*args, **kwargs)
+
 
 
 class EventReservation(models.Model):
