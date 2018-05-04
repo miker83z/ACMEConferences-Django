@@ -49,7 +49,7 @@ class EventReservation(models.Model):
 
 class Document(models.Model):
     name = models.CharField(max_length=255)
-    document = models.FileField(upload_to='reservations/static/documents')
+    document = models.FileField(upload_to='documents/')
     reservation = models.CharField(max_length=200, default='reservation')
 
 

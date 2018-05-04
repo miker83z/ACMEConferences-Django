@@ -126,6 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_URL = '/reservations/login_user/'
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

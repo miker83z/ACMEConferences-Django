@@ -12,7 +12,7 @@
                     <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="navbar-btn btn-danger btn pull-left">Upload</button>
+                    <button type="submit">Upload</button>
                     </form>
 
                     <a href="{% url 'reservations:index' %}" class="navbar-btn btn-danger btn pull-right">Return to Homepage</a>
