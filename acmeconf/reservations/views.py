@@ -146,6 +146,8 @@ def reservation(request, event_id):
                 name = form.cleaned_data['name']
                 password = form.cleaned_data['password']
 
+                event.bank_user = form.cleaned_data['name']
+
                 #send form data to the bank login service
                 risposta = client.service.userLogin(name, password)
 

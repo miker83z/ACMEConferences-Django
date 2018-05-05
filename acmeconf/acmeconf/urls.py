@@ -37,13 +37,13 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     dates = serializers.JSONField(required=False)
     class Meta:
         model = Event
-        fields = ('id', 'name', 'dates', 'subsStart', 'contDeadline', 'subsDeadline', 'city', 'address', 'cap', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'staff_ticket_price', 'is_open', 'is_open_contr')
+        fields = ('id', 'name', 'dates', 'subsStart', 'contDeadline', 'subsDeadline', 'city', 'address', 'cap', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'staff_ticket_price', 'available_money', 'is_open', 'is_open_contr')
 
 # Serializers define the API representation.
 class UserReservationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventReservation
-        fields = ('id', 'event', 'user', 'is_staff')
+        fields = ('id', 'event', 'user', 'is_staff', 'bank_user')
 
 # ViewSets define the view behavior.
 class UserViewSet(NestedViewSetMixin, viewsets.ModelViewSet):

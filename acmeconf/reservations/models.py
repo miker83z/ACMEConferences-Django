@@ -38,18 +38,22 @@ class Event(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.available_seats = self.max_seats
+        #equipara max seats a available seats solo se l'evento è in fase di creazione
+        if self.pk is None:
+            self.available_seats = self.max_seats
         super(Event, self).save(*args, **kwargs)
+
 
 
 class EventReservation(models.Model):
     event = models.IntegerField(default=0)
     user = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
+    bank_user = models.CharField(max_length=255, default='')
 
 class Document(models.Model):
     name = models.CharField(max_length=255)
-    document = models.FileField(upload_to='reservations/static/documents')
+    document = models.FileField(upload_to='documents/')
     reservation = models.CharField(max_length=200, default='reservation')
 
 
