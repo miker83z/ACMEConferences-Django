@@ -30,7 +30,7 @@ class Event(models.Model):
     date = models.DateTimeField('date published', auto_now=True)
     ticket_price = models.FloatField(default=0)
     staff_ticket_price = models.FloatField(default=0)
-    available_money = models.IntegerField(default=0)
+    available_money = models.FloatField(default=0)
     is_open = models.BooleanField(default=False)
     is_open_contr = models.BooleanField(default=False)
 

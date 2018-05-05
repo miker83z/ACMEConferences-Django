@@ -140,7 +140,7 @@ def reservation(request, event_id):
                 original_event.available_seats = original_event.available_seats - 1
 
                 #establish the connection to the bank server
-                client = Client('http://localhost/Banca/server.wsdl')
+                client = Client('http://jolie/server.wsdl')
 
                 #get bank username and password from the validate form
                 name = form.cleaned_data['name']
@@ -153,10 +153,10 @@ def reservation(request, event_id):
 
                 if event.is_staff == True:
                     original_event.available_money = original_event.available_money + original_event.staff_ticket_price
-                    client.service.transferPayment(original_event.staff_ticket_price, 'michele', risposta['userID'])
+                    client.service.transferPayment(original_event.staff_ticket_price, 'ACME', risposta['userID'])
                 else:
                     original_event.available_money = original_event.available_money + original_event.ticket_price
-                    client.service.transferPayment(original_event.ticket_price, 'michele', risposta['userID'])
+                    client.service.transferPayment(original_event.ticket_price, 'ACME', risposta['userID'])
 
                 client.service.userLogout(risposta['userID'])
 
