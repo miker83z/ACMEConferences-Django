@@ -49,6 +49,7 @@ class EventReservation(models.Model):
     event = models.IntegerField(default=0)
     user = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
+    bank_user = models.CharField(max_length=255, default='')
 
 class Document(models.Model):
     name = models.CharField(max_length=255)

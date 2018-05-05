@@ -43,7 +43,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 class UserReservationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventReservation
-        fields = ('id', 'event', 'user', 'is_staff')
+        fields = ('id', 'event', 'user', 'is_staff', 'bank_user')
 
 # ViewSets define the view behavior.
 class UserViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
