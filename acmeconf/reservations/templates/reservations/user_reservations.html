@@ -49,7 +49,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if user_event_list %}
-                        <h3><strong>User Reservations</strong></h3>
+                        <h3><strong>User Reservations: {{ request.user.username }}</strong></h3>
                         <ul>
                         {% for x in user_event_list %}
                           {% for y in event_list %}
