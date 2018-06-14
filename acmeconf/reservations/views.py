@@ -167,6 +167,8 @@ def reservation(request, event_id):
     
                     original_event.save()
                     event.save()
+                    request.session['except_server'] = 0
+                    request.session['except'] = 0
                     return render_to_response('reservations/booked.html')
                 except:
                     request.session['except_server'] = 2
