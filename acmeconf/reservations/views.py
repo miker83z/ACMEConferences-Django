@@ -153,6 +153,7 @@ def reservation(request, event_id):
                     risposta = client.service.userLogin(name, password)
     
                     if risposta['userID'] == "-1":
+                        request.session['except'] = 1
                         return HttpResponseRedirect(request.path_info)
     
                     if event.is_staff == True:
@@ -168,6 +169,7 @@ def reservation(request, event_id):
                     event.save()
                     return render_to_response('reservations/booked.html')
                 except:
+                    request.session['except_server'] = 2
                     return HttpResponseRedirect(request.path_info)
 
         else:
