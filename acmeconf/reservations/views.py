@@ -20,6 +20,7 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.authtoken import views as authviews
+from django.contrib.auth import logout
 import json
 
 
@@ -139,35 +140,39 @@ def reservation(request, event_id):
                 event.event = original_event.id
                 original_event.available_seats = original_event.available_seats - 1
 
-                try:    
+                try:
                     #establish the connection to the bank server
                     client = Client('http://jolie/server.wsdl')
-    
+
                     #get bank username and password from the validate form
                     name = form.cleaned_data['name']
                     password = form.cleaned_data['password']
-    
+
                     event.bank_user = form.cleaned_data['name']
-    
+
                     #send form data to the bank login service
                     risposta = client.service.userLogin(name, password)
-    
+
                     if risposta['userID'] == "-1":
+                        request.session['except'] = 1
                         return HttpResponseRedirect(request.path_info)
-    
+
                     if event.is_staff == True:
                         original_event.available_money = original_event.available_money + original_event.staff_ticket_price
                         client.service.transferPayment(original_event.staff_ticket_price, 'ACME', risposta['userID'])
                     else:
                         original_event.available_money = original_event.available_money + original_event.ticket_price
                         client.service.transferPayment(original_event.ticket_price, 'ACME', risposta['userID'])
-    
+
                     client.service.userLogout(risposta['userID'])
-    
+
                     original_event.save()
                     event.save()
+                    request.session['except_server'] = 0
+                    request.session['except'] = 0
                     return render_to_response('reservations/booked.html')
                 except:
+                    request.session['except_server'] = 2
                     return HttpResponseRedirect(request.path_info)
 
         else:
@@ -236,3 +241,8 @@ def delete_reservation(request, event_id):
     }
 
     return HttpResponse(template.render(context, request))
+
+
+def logout_usr(request):
+    logout(request)
+    return redirect('reservations:index')
