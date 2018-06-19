@@ -1,0 +1,88 @@
+<!-- Loads the path to your static files -->
+{% load staticfiles %}
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'reservations/style.css' %}"/>
+
+<!-- Bootstrap includes -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Font includes -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+
+<!-- Jquery includes -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<title>ACME Reservations</title>
+</head>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'reservations:index' %}"><img src="{% static "ACMEreservation.png" %}" style="max-height: 65px; max-width: 100px;"/></a>
+        </div>
+      </div>
+
+          <ul class="nav navbar-nav">
+              <li class="{% block index %}{% endblock %}"><a href="/reservations"><strong>Home</strong></a></li>
+              {% if not user.is_authenticated %}
+                <li class="{% block register %}{% endblock %}"><a href="{% url 'reservations:register' %}"><strong>Register</strong></a></li>
+                <li class="{% block login_user %}{% endblock %}"><a href="{% url 'reservations:login_user' %}"><strong>Login</strong></a></li>
+              {% endif %}
+              <li class="{% block user_reservations %}{% endblock %}"><a href="{% url 'reservations:user_reservations' %}"><strong>Your Reservations</strong></a></li>
+
+              {% if user.is_authenticated %}
+
+                  <li class="{% block det %}{% endblock %}"><a href="{% url 'reservations:user_reservations' %}"><font color="white"><strong>You are logged as: {{ request.user.username }}</strong></font></a></li>
+
+              {% endif %}
+          </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if user_event_list %}
+                        <h3><strong>User Reservations: {{ request.user.username }}</strong></h3>
+                        <ul>
+                        {% for x in user_event_list %}
+                          {% for y in event_list %}
+                            {% if x.event == y.id %}
+                              <li><h3><a href="/reservations/{{ y.id }}/">{{ y.name }}</a></h3></li>
+                            {% endif %}
+                          {% endfor %}
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No event reservations</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+  <div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <p class="navbar-text pull-left">© 2018 - ACMEConferences</p>
+      <a href="{% url 'reservations:logout_user' %}" class="navbar-btn btn-warning btn pull-right">
+      <span class="glyphicon glyphicon-log-out"></span>  Logout</a>
+    </div>
+  </div>

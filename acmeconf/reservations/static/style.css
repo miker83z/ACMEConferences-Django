@@ -8,3 +8,7 @@ body {
 .navbar {
  min-height: 80px;
 }
+
+#price_text {
+        display : none
+}

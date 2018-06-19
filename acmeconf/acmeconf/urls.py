@@ -20,12 +20,9 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from reservations.models import Event, EventReservation
 from rest_framework import routers, serializers, viewsets
-from rest_framework_nested import routers
 from rest_framework.routers import DefaultRouter
 from rest_framework.response import Response
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework.serializers import HyperlinkedModelSerializer
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework_extensions.mixins import NestedViewSetMixin
 from rest_framework_extensions.routers import NestedRouterMixin
@@ -37,15 +34,16 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'username', 'email')
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
+    dates = serializers.JSONField(required=False)
     class Meta:
         model = Event
-        fields = ('id', 'name', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'is_open')
+        fields = ('id', 'name', 'dates', 'subsStart', 'contDeadline', 'subsDeadline', 'city', 'address', 'cap', 'location', 'max_seats', 'available_seats', 'date', 'ticket_price', 'staff_ticket_price', 'available_money', 'is_open', 'is_open_contr')
 
 # Serializers define the API representation.
 class UserReservationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventReservation
-        fields = ('id', 'event', 'user')
+        fields = ('id', 'event', 'user', 'is_staff', 'bank_user')
 
 # ViewSets define the view behavior.
 class UserViewSet(NestedViewSetMixin, viewsets.ModelViewSet):

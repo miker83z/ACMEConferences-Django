@@ -2,6 +2,8 @@
 
 <!-- Loads the path to your static files -->
 {% load staticfiles %}
+
+<head>
 <link rel="stylesheet" type="text/css" href="{% static 'reservations/style.css' %}"/>
 
 <!-- Bootstrap includes -->
@@ -13,6 +15,9 @@
 
 <!-- Jquery includes -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<title>ACME Reservations</title>
+</head>
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -31,8 +36,18 @@
 
           <ul class="nav navbar-nav">
               <li class="{% block index %}{% endblock %}"><a href="/reservations"><strong>Home</strong></a></li>
-              <li class="{% block register_active %}{% endblock %}"><a href="{% url 'reservations:register' %}"><strong>Register</strong></a></li>
-              <li class="{% block login_user %}{% endblock %}"><a href="{% url 'reservations:login_user' %}"><strong>Login</strong></a></li>
+              {% if not user.is_authenticated %}
+                <li class="{% block register %}{% endblock %}"><a href="{% url 'reservations:register' %}"><strong>Register</strong></a></li>
+                <li class="{% block login_user %}{% endblock %}"><a href="{% url 'reservations:login_user' %}"><strong>Login</strong></a></li>
+              {% endif %}
+              <li class="{% block user_reservations %}{% endblock %}"><a href="{% url 'reservations:user_reservations' %}"><strong>Your Reservations</strong></a></li>
+
+              {% if user.is_authenticated %}
+
+                  <li class="{% block det %}{% endblock %}"><a href="{% url 'reservations:user_reservations' %}"><font color="white"><strong>You are logged as: {{ request.user.username }}</strong></font></a></li>
+
+              {% endif %}
+
           </ul>
     </div>
   </div>
@@ -66,7 +81,7 @@
   <div class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
       <p class="navbar-text pull-left">© 2018 - ACMEConferences</p>
-      <a href="chirpterlink" class="navbar-btn btn-info btn pull-right">
-      <span class="glyphicon glyphicon-thumbs-up"></span>  Follow ACME on Chirpter</a>
+      <a href="{% url 'reservations:logout_user' %}" class="navbar-btn btn-warning btn pull-right">
+      <span class="glyphicon glyphicon-log-out"></span>  Logout</a>
     </div>
   </div>
