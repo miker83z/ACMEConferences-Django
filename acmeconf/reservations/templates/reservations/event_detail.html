@@ -9,33 +9,12 @@
                     <h1>{{ event.name }}</h1>
                     <p><strong>Name:</strong> {{ event.name }}</p>
                     <p><strong>Location:</strong> {{ event.location }}</p>
-                    <p><strong>City:</strong> {{ event.city }}</p>
-                    <p><strong>Address:</strong> {{ event.address }}</p>
-                    <p><strong>CAP:</strong> {{ event.cap }}</p>
                     <p><strong>Max Seats:</strong> {{ event.max_seats }}</p>
                     <p><strong>Available Seats:</strong> {{ event.available_seats }}</p>
                     <p><strong>Audience Ticket Price:</strong> {{ event.ticket_price }}$</p>
                     <p><strong>Staff Ticket Price:</strong> {{ event.staff_ticket_price }}$</p>
-
-                    {% for value in event.dates %}
-                      <p><strong>Conference Day:</strong> {{ value }}</p>
-                    {% endfor %}
-                    <p><strong>Subcriptions Start:</strong> {{ event.subsStart }}</p>
-                    <p><strong>Contributions Deadline:</strong> {{ event.contDeadline }}</p>
-                    <p><strong>Subscriptions Deadline:</strong> {{ event.subsDeadline }}</p>
-
-                    <div id="book"><a href="/reservations/{{ event.id }}/reservation"> <button class="btn btn-primary">Pay and book now!</button></a></div>
-
-                    {% for x in reservations %}
-                      {% if x.user == user.id and x.event == event.id %}
-                        <a href="/reservations/{{ event.id }}/delete_confirm"> <button class="btn btn-danger pull-right">Delete Reservation</button></a>
-                        <script>$('#book').hide();</script>
-                      {% endif %}
-                      {% if x.user == user.id and x.event == event.id and x.is_staff == True and event.is_open_contr == True%}
-                        <a href="/reservations/{{ event.id }}/upload"> <button class="btn btn-warning">Upload Files</button></a>
-                      {% endif %}
-                    {% endfor %}
-
+                    <p><strong>Date:</strong> {{ event.date }}</p>
+                    <a href="/reservations/{{ event.id }}/reservation"> <button class="btn btn-primary">Pay and book now!</button></a>
                 </div>
             </div>
         </div>
